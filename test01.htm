@@ -35,16 +35,20 @@
 		});
 	});
 
-	$("#fix").click(function() {
+	$("#fix").one('click', function() {
 		$(".colorTest").each(function(idx, el){
 			var $el = $(el),
 				oldColour = $el.css("color"),
 				newColour = contrastify.fixRatio($el.css("backgroundColor"), oldColour, ratio);
 
-			$el.append("<br/>" + newColour).css({
-				//	Contrast the colour with the background
-				color: newColour
-			})
+			//	Contrast the colour with the background colour
+			if(contrastify.rgb2hex(oldColour) !== newColour) {
+				$el.append("<br/>" + newColour).css({
+					color: newColour
+				})
+			} else {
+				$el.append("<br/>Same");
+			}
 		});
 	});
 
