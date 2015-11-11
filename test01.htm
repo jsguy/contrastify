@@ -1,0 +1,54 @@
+<html>
+<head>
+	<title>Contrast ratio test</title>
+	<style>
+		.colorTest { padding: 2rem; display: inline-block; width: 4rem; height: 3rem; margin: 0 1rem 1rem 0; text-align: center;}
+		button { padding: 1rem; }
+	</style>
+	<script src="jquery-1.11.3.js"></script>
+</head>
+<body>
+
+<h1>Contrastify</h1>
+
+<p>
+	Get and fix contrast ratios for given colours.
+</p>
+
+<p id="target"></p>
+
+<hr/>
+
+<button id="fix">Auto-fix contrast ratio</button>
+
+<script src="contrastify.js"></script>
+
+<script>
+
+	var colours = ["#dd3b3b", "#669616", "#3bb7dd", "#000000", "#ffffff"],
+		ratio = 4.5,
+		$t = $("#target");
+
+	$.each(colours, function(bidx, bg){
+		$.each(colours, function(cidx, col){
+			$t.append('<div class="colorTest" style="background: '+bg+'; color: '+col+'">'+bg+'<br/>'+col+'</div>');
+		});
+	});
+
+	$("#fix").click(function() {
+		$(".colorTest").each(function(idx, el){
+			var $el = $(el),
+				oldColour = $el.css("color"),
+				newColour = contrastify.fixRatio($el.css("backgroundColor"), oldColour, ratio);
+
+			$el.append("<br/>" + newColour).css({
+				//	Contrast the colour with the background
+				color: newColour
+			})
+		});
+	});
+
+</script>
+
+</body>
+</html>
